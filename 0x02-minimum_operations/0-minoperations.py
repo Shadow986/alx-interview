@@ -1,27 +1,41 @@
-def minOperations(n: int) -> int:
-    """
-    Calculate the fewest number of operations needed to result in exactly n 'H' characters in the file.
+#!/usr/bin/python3
+'''
+Calculated minimum number of operations required
+'''
+
+
+def minOperations(n):
+    '''
+    Calculates the fewest number of operations required to achieve n
+    H characters
+
     Args:
-    - n (int): The desired number of 'H' characters.
-    Returns:
-    - int: The fewest number of operations needed. If n is impossible to achieve, return 0.
-    """
-    if not isinstance(n, int) or n <= 0:
+        n: Number of H characters
+
+    Return: Fewest number of operations
+    '''
+    if not isinstance(n, int):
         return 0
+    operations = 0  # Tracks number of operations
+    clipboard = 0   # Stores current number of characters
+    characters = 1  # Initial character H
 
-    operations = 0
-    divisor = 2
+    while characters < n:
+        if clipboard == 0:
+            # first copy_all and paste
+            clipboard = characters
+            characters += clipboard
+            operations += 2
 
-    while divisor * divisor <= n:
-        if n % divisor == 0:
-            n //= divisor
-            operations += divisor
-        else:
-            divisor += 1
+        elif n - characters > 0 and (n - characters) % characters == 0:
+            # copy all and paste
+            clipboard = characters
+            characters += clipboard
+            operations += 2
 
-    # If n is a prime number greater than 1, add it to operations
-    if n > 1:
-        operations += n
+        elif clipboard > 0:
+            # paste
+            characters += clipboard
+            operations += 1
 
     return operations
-
